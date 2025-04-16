@@ -28,7 +28,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tourze\\JsonRPCCallerBundle\\Tests\\": "src"
+      "Tourze\\JsonRPCCallerBundle\\Tests\\": "tests"
     }
   },
   "require-dev": {
