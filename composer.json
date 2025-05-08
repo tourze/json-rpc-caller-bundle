@@ -21,7 +21,8 @@
     "tourze/doctrine-track-bundle": "0.1.*",
     "tourze/doctrine-user-bundle": "0.0.*",
     "tourze/doctrine-snowflake-bundle": "0.1.*",
-    "psr/log": "^3|^2|^1"
+    "psr/log": "^3|^2|^1",
+    "doctrine/orm": "^3.0"
   },
   "autoload": {
     "psr-4": {
