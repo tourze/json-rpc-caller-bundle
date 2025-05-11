@@ -47,6 +47,42 @@ $caller = $entityManager->getRepository(ApiCaller::class)->findOneBy(['appId' =>
 // 按需校验签名、IP 等业务逻辑
 ```
 
+## 数据夹具
+
+本Bundle提供了用于测试和开发环境的数据夹具。可用于快速填充数据库，创建多种类型的API调用者实例。
+
+### 可用夹具
+
+- **ApiCallerFixtures**: 创建5种不同类型的API调用者，涵盖各种配置场景
+
+### 加载夹具
+
+在项目根目录执行：
+
+```bash
+php bin/console doctrine:fixtures:load --group=json-rpc-caller
+```
+
+如需保留现有数据，可使用`--append`选项：
+
+```bash
+php bin/console doctrine:fixtures:load --group=json-rpc-caller --append
+```
+
+### 在测试中使用
+
+您可以在测试中使用这些夹具创建的引用：
+
+```php
+use Tourze\JsonRPCCallerBundle\DataFixtures\ApiCallerFixtures;
+use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
+
+// 获取默认调用者引用
+$defaultCaller = $this->getReference(ApiCallerFixtures::DEFAULT_CALLER_REFERENCE, ApiCaller::class);
+```
+
+更多信息，请参阅`src/DataFixtures/README.md`。
+
 ## 详细文档
 
 - 实体：`ApiCaller`（详见 ENTITY_DESIGN.md）

@@ -47,6 +47,42 @@ $caller = $entityManager->getRepository(ApiCaller::class)->findOneBy(['appId' =>
 // Validate signature, IP, etc. according to your business logic
 ```
 
+## Data Fixtures
+
+This bundle provides data fixtures for testing and development environments. These can be used to quickly populate your database with different types of API callers.
+
+### Available Fixtures
+
+- **ApiCallerFixtures**: Creates 5 different types of API callers with various configurations
+
+### Loading Fixtures
+
+Execute from your project root:
+
+```bash
+php bin/console doctrine:fixtures:load --group=json-rpc-caller
+```
+
+To preserve existing data, use the `--append` option:
+
+```bash
+php bin/console doctrine:fixtures:load --group=json-rpc-caller --append
+```
+
+### Using in Tests
+
+You can use references to these fixtures in your tests:
+
+```php
+use Tourze\JsonRPCCallerBundle\DataFixtures\ApiCallerFixtures;
+use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
+
+// Get the default caller reference
+$defaultCaller = $this->getReference(ApiCallerFixtures::DEFAULT_CALLER_REFERENCE, ApiCaller::class);
+```
+
+For more information, see `src/DataFixtures/README.md`.
+
 ## Documentation
 
 - Entity: `ApiCaller` (see ENTITY_DESIGN.md)
