@@ -43,7 +43,7 @@ class ApiCaller implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
-    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
+    #[ORM\Column(type: Types::STRING, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
 
     #[Keyword]
