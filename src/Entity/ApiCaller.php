@@ -36,7 +36,7 @@ use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
 #[Deletable]
 #[ORM\Entity(repositoryClass: ApiCallerRepository::class)]
 #[ORM\Table(name: 'api_caller', options: ['comment' => 'API调用者'])]
-class ApiCaller
+class ApiCaller implements \Stringable
 {
     #[ExportColumn]
     #[ListColumn(order: -1, sorter: true)]
@@ -255,5 +255,10 @@ class ApiCaller
     public function getUpdateTime(): ?\DateTimeInterface
     {
         return $this->updateTime;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }
