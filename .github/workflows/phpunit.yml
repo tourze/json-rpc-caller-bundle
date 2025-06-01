@@ -14,7 +14,6 @@ jobs:
           - 8.3
         perfer:
           - stable
-          - lowest
     steps:
       - uses: actions/checkout@master
       - name: Install Dependencies
