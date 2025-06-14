@@ -31,7 +31,7 @@ class ApiCallerRepositoryTest extends KernelTestCase
         ];
         
         $entityMappings = [
-            'Tourze\JsonRPCCallerBundle\Entity' => '/Users/air/work/source/php-monorepo/packages/json-rpc-caller-bundle/tests/Integration/../../src/Entity',
+            'Tourze\JsonRPCCallerBundle\Entity' => __DIR__ . '/../../../src/Entity',
         ];
 
         return new IntegrationTestKernel(
