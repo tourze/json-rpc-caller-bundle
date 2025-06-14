@@ -7,10 +7,10 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 use Tourze\JsonRPCCallerBundle\DataFixtures\ApiCallerFixtures;
 use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
 use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
-use Tourze\JsonRPCCallerBundle\Tests\Integration\IntegrationTestKernel;
 
 /**
  * ApiCallerFixtures测试类
@@ -20,9 +20,29 @@ class ApiCallerFixturesTest extends KernelTestCase
     private EntityManagerInterface $entityManager;
     private ApiCallerRepository $repository;
 
+    protected static function getKernelClass(): string
+    {
+        return IntegrationTestKernel::class;
+    }
+
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new IntegrationTestKernel('test', true);
+        $appendBundles = [
+            \Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
+            \Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
+            \Tourze\JsonRPCCallerBundle\JsonRPCCallerBundle::class => ['all' => true],
+        ];
+        
+        $entityMappings = [
+            'Tourze\JsonRPCCallerBundle\Entity' => '/Users/air/work/source/php-monorepo/packages/json-rpc-caller-bundle/src/Entity',
+        ];
+
+        return new IntegrationTestKernel(
+            $options['environment'] ?? 'test',
+            $options['debug'] ?? true,
+            $appendBundles,
+            $entityMappings
+        );
     }
 
     protected function setUp(): void

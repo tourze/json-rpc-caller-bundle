@@ -2,12 +2,15 @@
 
 namespace Tourze\JsonRPCCallerBundle\Tests\Integration\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
+use Tourze\JsonRPCCallerBundle\JsonRPCCallerBundle;
 use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
-use Tourze\JsonRPCCallerBundle\Tests\Integration\IntegrationTestKernel;
 
 class ApiCallerRepositoryTest extends KernelTestCase
 {
@@ -17,6 +20,26 @@ class ApiCallerRepositoryTest extends KernelTestCase
     protected static function getKernelClass(): string
     {
         return IntegrationTestKernel::class;
+    }
+
+    protected static function createKernel(array $options = []): \Symfony\Component\HttpKernel\KernelInterface
+    {
+        $appendBundles = [
+            FrameworkBundle::class => ['all' => true],
+            DoctrineBundle::class => ['all' => true],
+            JsonRPCCallerBundle::class => ['all' => true],
+        ];
+        
+        $entityMappings = [
+            'Tourze\JsonRPCCallerBundle\Entity' => '/Users/air/work/source/php-monorepo/packages/json-rpc-caller-bundle/tests/Integration/../../src/Entity',
+        ];
+
+        return new IntegrationTestKernel(
+            $options['environment'] ?? 'test',
+            $options['debug'] ?? true,
+            $appendBundles,
+            $entityMappings
+        );
     }
 
     protected function setUp(): void
