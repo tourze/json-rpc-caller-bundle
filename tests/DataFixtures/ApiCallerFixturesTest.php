@@ -76,8 +76,6 @@ class ApiCallerFixturesTest extends KernelTestCase
     public function testFixtureGroups(): void
     {
         $groups = ApiCallerFixtures::getGroups();
-
-        $this->assertIsArray($groups);
         $this->assertContains('json-rpc-caller', $groups);
         $this->assertContains('api', $groups);
         $this->assertContains('test', $groups);

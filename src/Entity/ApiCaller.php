@@ -13,16 +13,6 @@ use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use Tourze\DoctrineTrackBundle\Attribute\TrackColumn;
 use Tourze\DoctrineUserBundle\Attribute\CreatedByColumn;
 use Tourze\DoctrineUserBundle\Attribute\UpdatedByColumn;
-use Tourze\EasyAdmin\Attribute\Action\Creatable;
-use Tourze\EasyAdmin\Attribute\Action\Deletable;
-use Tourze\EasyAdmin\Attribute\Action\Editable;
-use Tourze\EasyAdmin\Attribute\Column\BoolColumn;
-use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
-use Tourze\EasyAdmin\Attribute\Column\ListColumn;
-use Tourze\EasyAdmin\Attribute\Field\FormField;
-use Tourze\EasyAdmin\Attribute\Filter\Filterable;
-use Tourze\EasyAdmin\Attribute\Filter\Keyword;
-use Tourze\EasyAdmin\Attribute\Permission\AsPermission;
 use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
 
 /**
@@ -31,64 +21,41 @@ use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
  * @see https://happypeter.github.io/binfo/aes
  */
 #[IsGranted('ROLE_ADMIN')]
-#[AsPermission(title: 'API调用者')]
-#[Creatable]
-#[Editable]
-#[Deletable]
 #[ORM\Entity(repositoryClass: ApiCallerRepository::class)]
 #[ORM\Table(name: 'api_caller', options: ['comment' => 'API调用者'])]
 class ApiCaller implements \Stringable
 {
     use TimestampableAware;
-    #[ExportColumn]
-    #[ListColumn(order: -1, sorter: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
     #[ORM\Column(type: Types::STRING, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
 
-    #[Keyword]
-    #[ListColumn]
-    #[FormField]
     #[ORM\Column(type: Types::STRING, length: 60, unique: true, options: ['comment' => '名称'])]
     private string $title;
 
-    #[Keyword]
-    #[ListColumn]
-    #[FormField(span: 12)]
     #[ORM\Column(type: Types::STRING, length: 64, unique: true, nullable: false, options: ['comment' => 'AppID'])]
     private string $appId;
 
-    #[Keyword]
-    #[ListColumn]
-    #[FormField(span: 12)]
     #[ORM\Column(type: Types::STRING, length: 120, options: ['comment' => 'AppSecret'])]
     private ?string $appSecret = null;
 
-    #[ListColumn]
-    #[FormField]
     #[ORM\Column(type: Types::JSON, nullable: true, options: ['comment' => '允许调用IP'])]
     private ?array $allowIps = [];
 
-    #[ListColumn]
-    #[FormField]
     #[ORM\Column(type: Types::INTEGER, nullable: true, options: ['comment' => '签名超时时间', 'default' => 180])]
     private ?int $signTimeoutSecond = 180;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, options: ['comment' => 'AES Key'])]
     private ?string $aesKey = null;
 
-    #[FormField]
     #[ORM\Column(type: Types::TEXT, nullable: true, options: ['comment' => '备注', 'default' => ''])]
     private ?string $remark = null;
 
-    #[BoolColumn]
     #[IndexColumn]
     #[TrackColumn]
     #[ORM\Column(type: Types::BOOLEAN, nullable: true, options: ['comment' => '有效', 'default' => 0])]
-    #[ListColumn(order: 97)]
-    #[FormField(order: 97)]
     private ?bool $valid = false;
 
     #[CreatedByColumn]
@@ -99,15 +66,9 @@ class ApiCaller implements \Stringable
     #[ORM\Column(nullable: true, options: ['comment' => '更新人'])]
     private ?string $updatedBy = null;
 
-    #[Filterable]
     #[IndexColumn]
-    #[ListColumn(order: 98, sorter: true)]
-    #[ExportColumn]
     #[CreateTimeColumn]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['comment' => '创建时间'])]#[UpdateTimeColumn]
-    #[ListColumn(order: 99, sorter: true)]
-    #[Filterable]
-    #[ExportColumn]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['comment' => '更新时间'])]public function getId(): ?string
     {
         return $this->id;

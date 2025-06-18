@@ -30,8 +30,6 @@ class JsonRPCCallerBundleDependenciesTest extends TestCase
     public function testGetBundleDependencies_returnsCorrectDependencies(): void
     {
         $dependencies = JsonRPCCallerBundle::getBundleDependencies();
-
-        $this->assertIsArray($dependencies);
         $this->assertCount(3, $dependencies);
     }
 
@@ -64,7 +62,6 @@ class JsonRPCCallerBundleDependenciesTest extends TestCase
         $dependencies = JsonRPCCallerBundle::getBundleDependencies();
 
         foreach ($dependencies as $bundleClass => $config) {
-            $this->assertIsArray($config);
             $this->assertArrayHasKey('all', $config);
             $this->assertTrue($config['all']);
         }
@@ -120,7 +117,6 @@ class JsonRPCCallerBundleDependenciesTest extends TestCase
     public function testBundle_getPath_returnsCorrectPath(): void
     {
         $bundlePath = $this->bundle->getPath();
-        $this->assertIsString($bundlePath);
         $this->assertStringEndsWith('src', $bundlePath);
     }
 } 
