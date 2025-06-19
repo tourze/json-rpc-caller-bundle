@@ -2,7 +2,6 @@
 
 namespace Tourze\JsonRPCCallerBundle\Tests\Entity\ApiCaller;
 
-use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +22,7 @@ class ApiCallerDateTimeTest extends TestCase
 
     public function testSetCreateTime_withDateTime_setsCorrectValue(): void
     {
-        $dateTime = new DateTime('2023-12-01 10:30:45');
+        $dateTime = new DateTimeImmutable('2023-12-01 10:30:45');
         $this->apiCaller->setCreateTime($dateTime);
         
         $this->assertEquals($dateTime, $this->apiCaller->getCreateTime());
@@ -47,7 +46,7 @@ class ApiCallerDateTimeTest extends TestCase
 
     public function testSetUpdateTime_withDateTime_setsCorrectValue(): void
     {
-        $dateTime = new DateTime('2023-12-02 15:45:30');
+        $dateTime = new DateTimeImmutable('2023-12-02 15:45:30');
         $this->apiCaller->setUpdateTime($dateTime);
         
         $this->assertEquals($dateTime, $this->apiCaller->getUpdateTime());
@@ -71,8 +70,8 @@ class ApiCallerDateTimeTest extends TestCase
 
     public function testDateTime_chronologicalOrder_maintainsConsistency(): void
     {
-        $createTime = new DateTime('2023-12-01 10:00:00');
-        $updateTime = new DateTime('2023-12-01 11:00:00');
+        $createTime = new DateTimeImmutable('2023-12-01 10:00:00');
+        $updateTime = new DateTimeImmutable('2023-12-01 11:00:00');
         
         $this->apiCaller->setCreateTime($createTime);
         $this->apiCaller->setUpdateTime($updateTime);
@@ -83,8 +82,8 @@ class ApiCallerDateTimeTest extends TestCase
     public function testDateTime_sameTimestamp_handledCorrectly(): void
     {
         $timestamp = '2023-12-01 10:30:45';
-        $createTime = new DateTime($timestamp);
-        $updateTime = new DateTime($timestamp);
+        $createTime = new DateTimeImmutable($timestamp);
+        $updateTime = new DateTimeImmutable($timestamp);
         
         $this->apiCaller->setCreateTime($createTime);
         $this->apiCaller->setUpdateTime($updateTime);
@@ -99,8 +98,8 @@ class ApiCallerDateTimeTest extends TestCase
 
     public function testDateTime_differentTimezones_handledCorrectly(): void
     {
-        $utcTime = new DateTime('2023-12-01 10:00:00', new \DateTimeZone('UTC'));
-        $beijingTime = new DateTime('2023-12-01 18:00:00', new \DateTimeZone('Asia/Shanghai'));
+        $utcTime = new DateTimeImmutable('2023-12-01 10:00:00', new \DateTimeZone('UTC'));
+        $beijingTime = new DateTimeImmutable('2023-12-01 18:00:00', new \DateTimeZone('Asia/Shanghai'));
         
         $this->apiCaller->setCreateTime($utcTime);
         $this->apiCaller->setUpdateTime($beijingTime);
@@ -111,7 +110,7 @@ class ApiCallerDateTimeTest extends TestCase
 
     public function testDateTime_microseconds_preservedCorrectly(): void
     {
-        $dateTimeWithMicroseconds = DateTime::createFromFormat('Y-m-d H:i:s.u', '2023-12-01 10:30:45.123456');
+        $dateTimeWithMicroseconds = DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', '2023-12-01 10:30:45.123456');
         $this->apiCaller->setCreateTime($dateTimeWithMicroseconds);
         
         $retrieved = $this->apiCaller->getCreateTime();

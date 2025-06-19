@@ -2,7 +2,7 @@
 
 namespace Tourze\JsonRPCCallerBundle\Tests\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
 
@@ -87,14 +87,14 @@ class ApiCallerTest extends TestCase
 
     public function testSetAndGetCreateTime_withValidData(): void
     {
-        $createTime = new DateTime('2023-01-01 12:00:00');
+        $createTime = new DateTimeImmutable('2023-01-01 12:00:00');
         $this->apiCaller->setCreateTime($createTime);
         $this->assertEquals($createTime, $this->apiCaller->getCreateTime());
     }
 
     public function testSetAndGetUpdateTime_withValidData(): void
     {
-        $updateTime = new DateTime('2023-01-02 12:00:00');
+        $updateTime = new DateTimeImmutable('2023-01-02 12:00:00');
         $this->apiCaller->setUpdateTime($updateTime);
         $this->assertEquals($updateTime, $this->apiCaller->getUpdateTime());
     }
