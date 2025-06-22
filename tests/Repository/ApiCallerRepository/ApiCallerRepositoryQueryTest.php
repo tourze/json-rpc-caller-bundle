@@ -13,9 +13,11 @@ class ApiCallerRepositoryQueryTest extends TestCase
 {
     public function testRepository_extendsServiceEntityRepository(): void
     {
-        $this->assertTrue(
-            is_subclass_of(ApiCallerRepository::class, \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository::class)
-        );
+        // Repository 类应该继承自 ServiceEntityRepository
+        $reflection = new \ReflectionClass(ApiCallerRepository::class);
+        $parent = $reflection->getParentClass();
+        $this->assertNotFalse($parent);
+        $this->assertEquals(\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository::class, $parent->getName());
     }
 
     public function testRepository_hasCorrectMethods(): void
@@ -37,7 +39,10 @@ class ApiCallerRepositoryQueryTest extends TestCase
         $parameters = $constructor->getParameters();
         $this->assertCount(1, $parameters);
         $this->assertEquals('registry', $parameters[0]->getName());
-        $this->assertEquals('Doctrine\Persistence\ManagerRegistry', $parameters[0]->getType()?->getName());
+        $type = $parameters[0]->getType();
+        $this->assertNotNull($type);
+        // 使用 __toString() 方法获取类型名称
+        $this->assertEquals('Doctrine\Persistence\ManagerRegistry', (string) $type);
     }
 
     public function testRepository_implementsCorrectInterfaces(): void

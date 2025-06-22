@@ -47,7 +47,11 @@ class ApiCallerRepositoryTest extends KernelTestCase
         self::bootKernel();
 
         $this->entityManager = self::getContainer()->get('doctrine')->getManager();
-        $this->repository = $this->entityManager->getRepository(ApiCaller::class);
+        $repository = $this->entityManager->getRepository(ApiCaller::class);
+        if (!$repository instanceof ApiCallerRepository) {
+            throw new \LogicException('Expected ApiCallerRepository instance');
+        }
+        $this->repository = $repository;
 
         // 创建测试数据库 Schema
         $schemaTool = new SchemaTool($this->entityManager);
@@ -110,7 +114,7 @@ class ApiCallerRepositoryTest extends KernelTestCase
         parent::tearDown();
 
         // 清理连接
-        if ($this->entityManager) {
+        if ($this->entityManager !== null) {
             $this->entityManager->close();
             $this->entityManager = null;
         }
