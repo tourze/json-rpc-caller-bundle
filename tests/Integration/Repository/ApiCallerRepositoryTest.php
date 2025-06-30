@@ -11,6 +11,7 @@ use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 use Tourze\JsonRPCCallerBundle\Entity\ApiCaller;
 use Tourze\JsonRPCCallerBundle\JsonRPCCallerBundle;
 use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
+use Tourze\JsonRPCCallerBundle\Exception\InvalidRepositoryException;
 
 class ApiCallerRepositoryTest extends KernelTestCase
 {
@@ -47,9 +48,14 @@ class ApiCallerRepositoryTest extends KernelTestCase
         self::bootKernel();
 
         $this->entityManager = self::getContainer()->get('doctrine')->getManager();
+        
+        // 获取 repository
         $repository = $this->entityManager->getRepository(ApiCaller::class);
         if (!$repository instanceof ApiCallerRepository) {
-            throw new \LogicException('Expected ApiCallerRepository instance');
+            throw new InvalidRepositoryException(
+                ApiCallerRepository::class,
+                get_class($repository)
+            );
         }
         $this->repository = $repository;
 

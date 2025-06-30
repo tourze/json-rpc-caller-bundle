@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
-use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
+use Tourze\DoctrineSnowflakeBundle\Traits\SnowflakeKeyAware;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use Tourze\DoctrineTrackBundle\Attribute\TrackColumn;
 use Tourze\DoctrineUserBundle\Traits\BlameableAware;
@@ -17,18 +17,14 @@ use Tourze\JsonRPCCallerBundle\Repository\ApiCallerRepository;
  *
  * @see https://happypeter.github.io/binfo/aes
  */
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted(attribute: 'ROLE_ADMIN')]
 #[ORM\Entity(repositoryClass: ApiCallerRepository::class)]
 #[ORM\Table(name: 'api_caller', options: ['comment' => 'API调用者'])]
 class ApiCaller implements \Stringable
 {
+    use SnowflakeKeyAware;
     use TimestampableAware;
     use BlameableAware;
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
-    #[ORM\Column(type: Types::STRING, nullable: false, options: ['comment' => 'ID'])]
-    private ?string $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 60, unique: true, options: ['comment' => '名称'])]
     private string $title;
@@ -55,11 +51,6 @@ class ApiCaller implements \Stringable
     #[TrackColumn]
     #[ORM\Column(type: Types::BOOLEAN, nullable: true, options: ['comment' => '有效', 'default' => 0])]
     private ?bool $valid = false;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getAppId(): string
     {
